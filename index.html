@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quiz de Química</title>
+  <meta name="description" content="Quiz interativo de Química para apresentar em sala de aula: 30 perguntas ilustradas, do fácil ao difícil.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231565c0'/%3E%3Cpath d='M26 12h12v14l12 22a6 6 0 0 1-5 9H19a6 6 0 0 1-5-9l12-22z' fill='%23fff'/%3E%3Cpath d='M20 44h24l5 9a2 2 0 0 1-2 3H17a2 2 0 0 1-2-3z' fill='%234fb0e8'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#principal">Ir para o conteúdo</a>
+
+  <header class="topbar">
+    <div class="brand" aria-hidden="true">
+      <svg viewBox="0 0 64 64" width="34" height="34" focusable="false"><path d="M26 10h12v15l12 22a6 6 0 0 1-5 9H19a6 6 0 0 1-5-9l12-22z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><path d="M20 44h24l5 8a2 2 0 0 1-2 3H17a2 2 0 0 1-2-3z" fill="currentColor"/></svg>
+      <span>Quiz de Química</span>
+    </div>
+    <div class="topbar-actions">
+      <button type="button" class="icon-btn" id="btn-tema" aria-label="Alternar entre modo claro e escuro" title="Modo claro/escuro">
+        <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" focusable="false"><path d="M21 13.5A9 9 0 1 1 10.5 3a7 7 0 0 0 10.5 10.5z" fill="currentColor"/></svg>
+        <span class="icon-label">Tema</span>
+      </button>
+      <button type="button" class="icon-btn" id="btn-tela-cheia" aria-label="Alternar tela cheia" title="Tela cheia (tecla F)">
+        <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" focusable="false"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="icon-label">Tela cheia</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="principal">
+
+    <!-- ======================= TELA INICIAL ======================= -->
+    <section id="tela-inicio" class="tela" aria-labelledby="titulo-inicio">
+      <div class="hero">
+        <h1 id="titulo-inicio" tabindex="-1">Quiz de Química</h1>
+        <p class="sub"><span id="total-perguntas">30</span> perguntas ilustradas · do fácil ao difícil</p>
+      </div>
+
+      <div class="config card">
+        <fieldset class="campo">
+          <legend>Participantes</legend>
+          <div class="pills" id="pills-equipes" role="radiogroup" aria-label="Número de equipes">
+            <label class="pill"><input type="radio" name="equipes" value="0" checked><span>Sem placar</span></label>
+            <label class="pill"><input type="radio" name="equipes" value="1"><span>1 equipe</span></label>
+            <label class="pill"><input type="radio" name="equipes" value="2"><span>2</span></label>
+            <label class="pill"><input type="radio" name="equipes" value="3"><span>3</span></label>
+            <label class="pill"><input type="radio" name="equipes" value="4"><span>4</span></label>
+            <label class="pill"><input type="radio" name="equipes" value="5"><span>5</span></label>
+            <label class="pill"><input type="radio" name="equipes" value="6"><span>6</span></label>
+          </div>
+          <div id="nomes-equipes" class="nomes" hidden></div>
+        </fieldset>
+
+        <fieldset class="campo">
+          <legend>Cronômetro por pergunta</legend>
+          <label class="switch">
+            <input type="checkbox" id="chk-timer">
+            <span class="trilho" aria-hidden="true"></span>
+            <span class="switch-txt">Ativar cronômetro</span>
+          </label>
+          <div class="pills" id="pills-tempo" role="radiogroup" aria-label="Tempo por pergunta">
+            <label class="pill"><input type="radio" name="tempo" value="20" disabled><span>20 s</span></label>
+            <label class="pill"><input type="radio" name="tempo" value="30" checked disabled><span>30 s</span></label>
+            <label class="pill"><input type="radio" name="tempo" value="45" disabled><span>45 s</span></label>
+            <label class="pill"><input type="radio" name="tempo" value="60" disabled><span>60 s</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="campo">
+          <legend>Alternativas</legend>
+          <label class="switch">
+            <input type="checkbox" id="chk-embaralhar">
+            <span class="trilho" aria-hidden="true"></span>
+            <span class="switch-txt">Embaralhar a ordem das alternativas</span>
+          </label>
+        </fieldset>
+
+        <button type="button" class="btn grande primario" id="btn-comecar">Começar</button>
+        <p class="dica">Atalhos: <kbd>1</kbd>–<kbd>5</kbd> ou <kbd>A</kbd>–<kbd>E</kbd> escolhem · <kbd>Enter</kbd> confirma e avança · <kbd>←</kbd> <kbd>→</kbd> navegam · <kbd>F</kbd> tela cheia</p>
+      </div>
+    </section>
+
+    <!-- ======================= TELA DO QUIZ ======================= -->
+    <section id="tela-quiz" class="tela" hidden aria-label="Pergunta do quiz">
+      <div class="quiz-head">
+        <div class="prog">
+          <span class="prog-txt" id="prog-txt">Pergunta 1 de 30</span>
+          <div class="barra" role="progressbar" aria-label="Progresso do quiz" aria-valuemin="0" aria-valuemax="30" aria-valuenow="1" id="barra"><i id="prog-bar"></i></div>
+        </div>
+        <span class="selo" id="selo">Fácil</span>
+        <span class="tema" id="tema"></span>
+        <span class="acertos" id="acertos" title="Acertos da turma"></span>
+        <div class="timer" id="timer" hidden>
+          <button type="button" class="icon-btn pequeno" id="btn-pausa" aria-label="Pausar cronômetro">⏸</button>
+          <span class="timer-txt" id="timer-txt" role="timer" aria-live="off">00:30</span>
+          <div class="tbarra" aria-hidden="true"><i id="timer-bar"></i></div>
+        </div>
+        <button type="button" class="btn leve" id="btn-sair">Sair</button>
+      </div>
+
+      <div id="placar" class="placar" hidden aria-label="Placar das equipes"></div>
+
+      <div class="quiz-body">
+        <figure class="ilus" id="ilus"></figure>
+
+        <div class="qa">
+          <h2 id="enunciado" class="enunciado" tabindex="-1"></h2>
+          <div id="opcoes" class="opcoes" role="radiogroup" aria-labelledby="enunciado"></div>
+        </div>
+
+        <div id="feedback" class="feedback" role="status" aria-live="polite" hidden>
+          <div class="fb-cab">
+            <div class="fb-textos">
+              <div class="fb-titulo" id="fb-titulo"></div>
+              <p class="fb-resp" id="fb-resp"></p>
+            </div>
+            <div class="award" id="award" hidden>
+              <span class="award-t">Atribuir ponto:</span>
+              <div class="award-btns" id="award-btns"></div>
+            </div>
+          </div>
+          <p class="fb-exp" id="fb-exp"></p>
+        </div>
+      </div>
+
+      <div class="quiz-actions">
+        <button type="button" class="btn" id="btn-prev">← Anterior</button>
+        <button type="button" class="btn grande primario" id="btn-conf">Confirmar resposta</button>
+        <button type="button" class="btn grande primario" id="btn-next" hidden>Próxima →</button>
+      </div>
+    </section>
+
+    <!-- ======================= TELA FINAL ======================= -->
+    <section id="tela-fim" class="tela" hidden aria-labelledby="titulo-fim">
+      <h1 id="titulo-fim" tabindex="-1" class="titulo-fim">Resultado final</h1>
+
+      <div class="fim-grid">
+        <div class="card fim-resumo">
+          <div class="anel" id="anel">
+            <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+              <circle cx="60" cy="60" r="52" class="anel-fundo"/>
+              <circle cx="60" cy="60" r="52" class="anel-valor" id="anel-valor" transform="rotate(-90 60 60)"/>
+            </svg>
+            <div class="anel-txt"><strong id="fim-pct">0%</strong><span id="fim-frac">0 de 30</span></div>
+          </div>
+          <p class="fim-msg" id="fim-msg"></p>
+        </div>
+
+        <div class="card fim-niveis">
+          <h2>Acertos por nível</h2>
+          <div id="fim-niveis"></div>
+        </div>
+
+        <div class="card fim-equipes" id="fim-equipes" hidden>
+          <h2>Placar das equipes</h2>
+          <ol id="fim-rank"></ol>
+        </div>
+      </div>
+
+      <div class="fim-actions">
+        <label class="switch">
+          <input type="checkbox" id="chk-embaralhar-fim">
+          <span class="trilho" aria-hidden="true"></span>
+          <span class="switch-txt">Embaralhar alternativas</span>
+        </label>
+        <button type="button" class="btn grande primario" id="btn-denovo">Jogar de novo</button>
+        <button type="button" class="btn" id="btn-inicio">Voltar ao início</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="questions.js"></script>
+  <script src="ilustracoes.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
